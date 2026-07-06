@@ -10,39 +10,14 @@
     font-family: 'Montserrat', sans-serif;
     color: #4a0505;
     background-color: #2b0202; /* dark background fallback */
+    position: relative;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
-/* Painted Red Floral Background (unblurred/crisp watercolor look) */
+/* Painted Red Floral Background (scrolls naturally with page) */
 .bg-painted {
-    position: fixed;
-    inset: 0;
-    background-image: url('../images/red_painted_bg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -2;
-}
-
-/* Warm reddish overlay to blend the background and add contrast */
-.bg-painted::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(43, 2, 2, 0.4) 0%,
-        rgba(74, 5, 5, 0.55) 50%,
-        rgba(43, 2, 2, 0.7) 100%
-    );
-    z-index: -1;
-}
-
-/* Raining flower petals custom color/opacity */
-.inv-body .petal {
-    color: #ff5252;
-    opacity: 0.25;
+    display: none;
 }
 
 /* Scroll wrapper */
@@ -50,6 +25,16 @@
     position: relative;
     z-index: 2;
     width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(
+        to bottom,
+        rgba(100, 10, 10, 0.15) 0%,
+        rgba(139, 26, 26, 0.25) 50%,
+        rgba(43, 2, 2, 0.5) 100%
+    ), url('../images/photo-1585515160245-fb3d08cbb682.avif');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: repeat-y;
 }
 
 /* ======================================================
@@ -187,8 +172,9 @@
 
 .inv-detail-card {
     position: relative;
-    width: 100%;
-    max-width: 580px;
+    width: 75%;             /* 75% width for details card */
+    min-width: 320px;       /* ensures it doesn't shrink too much */
+    max-width: 900px;       /* increased max-width to allow a wider layout */
     /* Soft red/gold tinted glassmorphism */
     background: rgba(43, 2, 2, 0.45);
     backdrop-filter: blur(20px);
@@ -196,7 +182,7 @@
     border: 1px solid rgba(255, 100, 100, 0.25);
     border-radius: 20px;
     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
-    padding: 60px 40px;
+    padding: 10px 40px;
     box-sizing: border-box;
     text-align: center;
 }
@@ -327,6 +313,8 @@
     }
 
     .inv-detail-card {
+        width: 92%;
+        min-width: auto;
         padding: 40px 20px;
     }
 
@@ -336,5 +324,11 @@
 
     .inv-footer-msg {
         font-size: 1.6rem;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 992px) {
+    .inv-detail-card {
+        width: 75%;
     }
 }
