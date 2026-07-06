@@ -186,4 +186,68 @@ document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("click", unlockAudio);
         document.addEventListener("touchstart", unlockAudio);
     }
+
+    /* ======================================================
+       OUR STORY - 3D COVER FLOW SLIDESHOW
+       ====================================================== */
+    const storyImages = document.querySelectorAll(".story-image");
+    const prevBtn = document.querySelector(".prev-arrow");
+    const nextBtn = document.querySelector(".next-arrow");
+    let currentImageIndex = 0;
+
+    function updateCoverflow() {
+        if (storyImages.length === 0) return;
+        
+        storyImages.forEach((img, index) => {
+            img.className = "story-image";
+            
+            if (index === currentImageIndex) {
+                img.classList.add("active");
+            } else if (index === (currentImageIndex - 1 + storyImages.length) % storyImages.length) {
+                img.classList.add("prev-1");
+            } else if (index === (currentImageIndex - 2 + storyImages.length) % storyImages.length) {
+                img.classList.add("prev-2");
+            } else if (index === (currentImageIndex + 1) % storyImages.length) {
+                img.classList.add("next-1");
+            } else if (index === (currentImageIndex + 2) % storyImages.length) {
+                img.classList.add("next-2");
+            } else {
+                img.classList.add("hidden");
+            }
+        });
+    }
+
+    if (storyImages.length > 0) {
+        updateCoverflow();
+
+        let coverflowInterval = setInterval(autoNext, 4000);
+
+        function autoNext() {
+            currentImageIndex = (currentImageIndex + 1) % storyImages.length;
+            updateCoverflow();
+        }
+
+        function resetCoverflowInterval() {
+            clearInterval(coverflowInterval);
+            coverflowInterval = setInterval(autoNext, 4000);
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex - 1 + storyImages.length) % storyImages.length;
+                updateCoverflow();
+                resetCoverflowInterval();
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex + 1) % storyImages.length;
+                updateCoverflow();
+                resetCoverflowInterval();
+            });
+        }
+    }
 });
