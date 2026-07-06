@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let isAutoScrolling = false;
     const scrollSpeed = 0.7; // Speed in pixels per frame (approx 42px per second)
     let animationFrameId = null;
+    let accumulatedScroll = 0;
 
     function autoScrollStep() {
         if (!isAutoScrolling) return;
@@ -94,13 +95,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        window.scrollBy(0, scrollSpeed);
+        accumulatedScroll += scrollSpeed;
+        if (accumulatedScroll >= 1) {
+            const scrollAmount = Math.floor(accumulatedScroll);
+            window.scrollBy(0, scrollAmount);
+            accumulatedScroll -= scrollAmount;
+        }
+        
         animationFrameId = requestAnimationFrame(autoScrollStep);
     }
 
     function startAutoScroll() {
         if (isAutoScrolling) return;
         isAutoScrolling = true;
+        accumulatedScroll = 0; // Reset accumulator on start
         animationFrameId = requestAnimationFrame(autoScrollStep);
     }
 
@@ -120,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Click anywhere to toggle (resume or stop) auto-scrolling
     window.addEventListener("click", (e) => {
         // Skip toggle if user clicked on buttons, links, calendar items, music controllers, inputs, labels, or the RSVP form container
-        if (e.target.closest("a") || e.target.closest("button") || e.target.closest("iframe") || e.target.closest(".countdown-item") || e.target.closest(".music-control-container") || e.target.closest("input") || e.target.closest("label") || e.target.closest(".rsvp-form-container")) {
+        if (e.target.closest("a") || e.target.closest("button") || e.target.closest("iframe") || e.target.closest(".countdown-item") || e.target.closest(".music-control-container") || e.target.closest("input") || e.target.closest("label") || e.target.closest(".rsvp-form-container") || e.target.closest(".scroll-arrow")) {
             return;
         }
         
@@ -130,6 +138,21 @@ document.addEventListener("DOMContentLoaded", () => {
             startAutoScroll();
         }
     });
+
+    // Scroll Arrow Logic
+    const scrollArrow = document.querySelector(".scroll-arrow");
+    const detailsSection = document.querySelector(".inv-details-section");
+    if (scrollArrow && detailsSection) {
+        scrollArrow.addEventListener("click", (e) => {
+            e.stopPropagation();
+            detailsSection.scrollIntoView({ behavior: "smooth" });
+            stopAutoScroll();
+            // Resume auto-scroll after smooth scrolling finishes
+            setTimeout(() => {
+                startAutoScroll();
+            }, 800);
+        });
+    }
 
     // Start auto-scrolling 1.5 seconds after page loads
     setTimeout(() => {
@@ -145,13 +168,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const musicBtn = document.getElementById("musicBtn");
     const musicIcon = document.getElementById("musicIcon");
 
+    if (audio) {
+        audio.muted = false; // Ensure it starts unmuted
+    }
+
     function playMusic() {
         if (!audio) return;
+        audio.muted = false;
         audio.play().then(() => {
             if (musicBtn) musicBtn.classList.add("playing");
             if (musicIcon) musicIcon.textContent = "🎵";
         }).catch((error) => {
             console.log("Autoplay blocked by browser. Awaiting user interaction.", error);
+            // Revert icon and button class if blocked, so user knows it's paused
+            if (musicBtn) musicBtn.classList.remove("playing");
+            if (musicIcon) musicIcon.textContent = "🔇";
         });
     }
 
@@ -180,11 +211,17 @@ document.addEventListener("DOMContentLoaded", () => {
             if (audio.paused) {
                 playMusic();
             }
+            // Remove listeners once unlocked
             document.removeEventListener("click", unlockAudio);
             document.removeEventListener("touchstart", unlockAudio);
+            document.removeEventListener("mousedown", unlockAudio);
+            document.removeEventListener("keydown", unlockAudio);
         };
+        
         document.addEventListener("click", unlockAudio);
         document.addEventListener("touchstart", unlockAudio);
+        document.addEventListener("mousedown", unlockAudio);
+        document.addEventListener("keydown", unlockAudio);
     }
 
     /* ======================================================

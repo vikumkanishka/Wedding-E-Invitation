@@ -27,7 +27,7 @@ body {
     position: fixed;
     inset: -30px;
     /* extends beyond viewport to hide blur edges */
-    background-image: url('../images/landing-back.jpg');
+    background-image: url('../images/photo-1585515160245-fb3d08cbb682.avif');
     background-size: cover;
     background-position: center;
     filter: blur(10px);
