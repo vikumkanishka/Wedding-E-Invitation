@@ -49,6 +49,7 @@
     padding: 20px;
     box-sizing: border-box;
     position: relative;
+    z-index: 2; /* Layer above the petals */
 }
 
 .names-arch-container {
@@ -168,6 +169,8 @@
     padding: 0 20px 80px;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
+    z-index: 2; /* Layer above the petals */
 }
 
 .inv-detail-card {
