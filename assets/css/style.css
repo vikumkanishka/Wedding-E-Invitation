@@ -240,3 +240,41 @@ body {
         width: 125%;
     }
 }
+
+/* ===========================
+   PETAL RAIN LAYER
+   =========================== */
+
+/* Full-screen container — sits above the blurred bg, below the card */
+.petal-rain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;         /* above bg-blur (z:0), below page-wrapper (z:1 with higher stacking) */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Individual petal */
+.petal {
+    position: absolute;
+    top: -40px;          /* start just above the viewport */
+    color: #ff6b6b;      /* soft red/pink petals */
+    user-select: none;
+    animation: petalFall linear infinite both;
+    will-change: transform, opacity;
+}
+
+/* Falling + slight horizontal drift using CSS custom property */
+@keyframes petalFall {
+    0% {
+        transform: translateY(0px) translateX(0px) rotate(0deg);
+        opacity: inherit;
+    }
+    80% {
+        opacity: inherit;
+    }
+    100% {
+        transform: translateY(105vh) translateX(var(--drift, 0px)) rotate(360deg);
+        opacity: 0;
+    }
+}
