@@ -86,11 +86,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let animationFrameId = null;
     let accumulatedScroll = 0;
 
+    function getScrollContainer() {
+        // Find if body or documentElement is the scroll container
+        return document.body.scrollHeight > document.documentElement.clientHeight ? document.body : document.documentElement;
+    }
+
     function autoScrollStep() {
         if (!isAutoScrolling) return;
 
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        if (window.scrollY >= maxScroll - 2) {
+        const container = getScrollContainer();
+        const maxScroll = container.scrollHeight - container.clientHeight;
+        
+        if (container.scrollTop >= maxScroll - 2 && maxScroll > 0) {
             stopAutoScroll();
             return;
         }
@@ -98,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         accumulatedScroll += scrollSpeed;
         if (accumulatedScroll >= 1) {
             const scrollAmount = Math.floor(accumulatedScroll);
-            window.scrollBy(0, scrollAmount);
+            container.scrollTop += scrollAmount;
             accumulatedScroll -= scrollAmount;
         }
         
@@ -156,7 +163,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Start auto-scrolling 1.5 seconds after page loads
     setTimeout(() => {
-        if (window.scrollY < 20) {
+        const container = getScrollContainer();
+        if (container.scrollTop < 20) {
             startAutoScroll();
         }
     }, 1500);
@@ -180,9 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (musicIcon) musicIcon.textContent = "🎵";
         }).catch((error) => {
             console.log("Autoplay blocked by browser. Awaiting user interaction.", error);
-            // Revert icon and button class if blocked, so user knows it's paused
-            if (musicBtn) musicBtn.classList.remove("playing");
-            if (musicIcon) musicIcon.textContent = "🔇";
+            // We intentionally do not show the muted icon here so it always appears unmuted on load
         });
     }
 
