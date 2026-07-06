@@ -119,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Click anywhere to toggle (resume or stop) auto-scrolling
     window.addEventListener("click", (e) => {
-        // Skip toggle if user clicked on buttons, links, calendar items, or inputs
-        if (e.target.closest("a") || e.target.closest("button") || e.target.closest("iframe") || e.target.closest(".countdown-item")) {
+        // Skip toggle if user clicked on buttons, links, calendar items, music controllers, or inputs
+        if (e.target.closest("a") || e.target.closest("button") || e.target.closest("iframe") || e.target.closest(".countdown-item") || e.target.closest(".music-control-container")) {
             return;
         }
         
@@ -137,4 +137,53 @@ document.addEventListener("DOMContentLoaded", () => {
             startAutoScroll();
         }
     }, 1500);
+
+    /* ======================================================
+       BACKGROUND MUSIC HANDLER
+       ====================================================== */
+    const audio = document.getElementById("bg-music");
+    const musicBtn = document.getElementById("musicBtn");
+    const musicIcon = document.getElementById("musicIcon");
+
+    function playMusic() {
+        if (!audio) return;
+        audio.play().then(() => {
+            if (musicBtn) musicBtn.classList.add("playing");
+            if (musicIcon) musicIcon.textContent = "🎵";
+        }).catch((error) => {
+            console.log("Autoplay blocked by browser. Awaiting user interaction.", error);
+        });
+    }
+
+    function pauseMusic() {
+        if (!audio) return;
+        audio.pause();
+        if (musicBtn) musicBtn.classList.remove("playing");
+        if (musicIcon) musicIcon.textContent = "🔇";
+    }
+
+    if (musicBtn && audio) {
+        musicBtn.addEventListener("click", (e) => {
+            e.stopPropagation(); // Avoid triggering scroller play/pause
+            if (audio.paused) {
+                playMusic();
+            } else {
+                pauseMusic();
+            }
+        });
+
+        // Attempt autoplay on page load
+        playMusic();
+
+        // Fallback: Start playing on first interaction if blocked by browser
+        const unlockAudio = () => {
+            if (audio.paused) {
+                playMusic();
+            }
+            document.removeEventListener("click", unlockAudio);
+            document.removeEventListener("touchstart", unlockAudio);
+        };
+        document.addEventListener("click", unlockAudio);
+        document.addEventListener("touchstart", unlockAudio);
+    }
 });
