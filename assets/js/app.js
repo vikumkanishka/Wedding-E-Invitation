@@ -1,48 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     /* ======================================================
-       RAINING FLOWER PETALS
-    ====================================================== */
-    const TOTAL_PETALS  = 55;
-    const PETAL_CHAR    = "✿";
-    const rainContainer = document.getElementById("petal-rain");
-
-    function rand(min, max) { return Math.random() * (max - min) + min; }
-
-    function createPetal() {
-        const el = document.createElement("span");
-        el.classList.add("petal");
-        el.textContent = PETAL_CHAR;
-
-        el.style.cssText = `
-            left: ${rand(0, 100)}vw;
-            font-size: ${rand(10, 22)}px;
-            opacity: ${rand(0.12, 0.35)};
-            animation-duration: ${rand(6, 14)}s;
-            animation-delay: ${rand(0, 14)}s;
-            --drift: ${rand(-60, 60)}px;
-        `;
-
-        if (rainContainer) rainContainer.appendChild(el);
-
-        el.addEventListener("animationend", () => {
-            el.style.animationDelay    = "0s";
-            el.style.left              = rand(0, 100) + "vw";
-            el.style.opacity           = rand(0.12, 0.35);
-            el.style.animationDuration = rand(6, 14) + "s";
-            el.style.setProperty("--drift", rand(-60, 60) + "px");
-            el.classList.remove("petal");
-            void el.offsetWidth; // force reflow to restart animation
-            el.classList.add("petal");
-        });
-    }
-
-    if (rainContainer) {
-        for (let i = 0; i < TOTAL_PETALS; i++) createPetal();
-    }
-
-    /* ======================================================
-       OPEN INVITATION — MAGICAL EXIT
+       OPEN INVITATION — MAGICAL EXIT & VIEW SWITCH
     ====================================================== */
     const openBtn = document.getElementById("openInvitationBtn");
     const card    = document.querySelector(".card");
@@ -60,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const ctx = new AudioContext();
         const now = ctx.currentTime;
         
-        // Magical ascending pentatonic scale
         const frequencies = [1046.50, 1174.66, 1318.51, 1567.98, 1760.00, 2093.00, 2349.32, 2637.02, 3135.96, 3520.00, 4186.01];
         
         frequencies.forEach((freq, i) => {
@@ -70,9 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
             osc.type = "sine";
             osc.frequency.value = freq;
             
-            const startTime = now + (i * 0.07); // Rapid sweep
+            const startTime = now + (i * 0.07);
             
-            // Envelope: quick attack, long sparkling decay
             gain.gain.setValueAtTime(0, startTime);
             gain.gain.linearRampToValueAtTime(0.12, startTime + 0.02);
             gain.gain.exponentialRampToValueAtTime(0.001, startTime + 1.5);
@@ -87,20 +43,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (openBtn && card) {
         openBtn.addEventListener("click", () => {
-            // Play synthesized magical fairy sound (100% reliable)
+            // Play synthesized magical fairy sound
             try { playFairySound(); } catch (e) { console.log(e); }
 
             // Trigger the magical exit animation on the card
             card.classList.add("magic-exit");
 
-            // Fade to white before navigating
+            // Guarantee music plays immediately on click
+            const bgMusic = document.getElementById("bg-music");
+            if (bgMusic) {
+                // Ensure UI reflects playing state in petals.js
+                window.musicStartedByClick = true;
+                bgMusic.play().catch(e => console.log("Music play failed:", e));
+            }
+
+            // Fade to white before switching views
             setTimeout(addFlashOverlay, 950);
 
-            // Navigate to invitation details page
+            // Switch to invitation view
             setTimeout(() => {
-                window.location.href = "invitation.html";
+                document.getElementById("landing-view").style.display = "none";
+                document.body.style.overflowY = "auto"; // Allow scrolling
+                
+                const invView = document.getElementById("invitation-view");
+                invView.style.display = "block";
+                
+                // Trigger reflow for fade in
+                void invView.offsetWidth;
+                invView.style.opacity = "1";
+                
+                // Initialize auto-scrolling
+                if (typeof window.startAutoScroll === "function") {
+                    window.startAutoScroll();
+                }
             }, 1700);
         });
     }
-
 });

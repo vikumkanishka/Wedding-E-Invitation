@@ -2,11 +2,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     const TOTAL_PETALS = 45;
     const PETAL_CHAR   = "✿";
-    const rainContainer = document.getElementById("petal-rain");
+    const rainContainers = document.querySelectorAll(".petal-rain");
 
     function rand(min, max) { return Math.random() * (max - min) + min; }
 
-    function createPetal() {
+    function createPetal(container) {
         const el = document.createElement("span");
         el.classList.add("petal");
         el.textContent = PETAL_CHAR;
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             --drift: ${drift}px;
         `;
 
-        if (rainContainer) rainContainer.appendChild(el);
+        if (container) container.appendChild(el);
 
         el.addEventListener("animationend", () => {
             el.style.animationDelay    = "0s";
@@ -41,9 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (rainContainer) {
-        for (let i = 0; i < TOTAL_PETALS; i++) createPetal();
-    }
+    rainContainers.forEach(container => {
+        for (let i = 0; i < TOTAL_PETALS; i++) createPetal(container);
+    });
 
     // Countdown Timer logic
     const targetDate = new Date("July 31, 2026 18:00:00").getTime();
@@ -118,6 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
         accumulatedScroll = 0; // Reset accumulator on start
         animationFrameId = requestAnimationFrame(autoScrollStep);
     }
+    
+    // Expose to window so app.js can trigger it when switching views
+    window.startAutoScroll = startAutoScroll;
 
     function stopAutoScroll() {
         if (!isAutoScrolling) return;
@@ -161,24 +164,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Start auto-scrolling 1.5 seconds after page loads
-    setTimeout(() => {
-        const container = getScrollContainer();
-        if (container.scrollTop < 20) {
-            startAutoScroll();
-        }
-    }, 1500);
-
     /* ======================================================
        BACKGROUND MUSIC HANDLER
        ====================================================== */
     const audio = document.getElementById("bg-music");
     const musicBtn = document.getElementById("musicBtn");
     const musicIcon = document.getElementById("musicIcon");
-
-    if (audio) {
-        audio.muted = false; // Ensure it starts unmuted
-    }
 
     function playMusic() {
         if (!audio) return;
@@ -188,7 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (musicIcon) musicIcon.textContent = "🎵";
         }).catch((error) => {
             console.log("Autoplay blocked by browser. Awaiting user interaction.", error);
-            // We intentionally do not show the muted icon here so it always appears unmuted on load
+            if (musicBtn) musicBtn.classList.remove("playing");
+            if (musicIcon) musicIcon.textContent = "🔇";
         });
     }
 
@@ -209,25 +201,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Attempt autoplay on page load
-        playMusic();
-
-        // Fallback: Start playing on first interaction if blocked by browser
-        const unlockAudio = () => {
-            if (audio.paused) {
-                playMusic();
-            }
-            // Remove listeners once unlocked
-            document.removeEventListener("click", unlockAudio);
-            document.removeEventListener("touchstart", unlockAudio);
-            document.removeEventListener("mousedown", unlockAudio);
-            document.removeEventListener("keydown", unlockAudio);
-        };
+        // Listen for when app.js or the user starts the music
+        audio.addEventListener("play", () => {
+            if (musicBtn) musicBtn.classList.add("playing");
+            if (musicIcon) musicIcon.textContent = "🎵";
+        });
         
-        document.addEventListener("click", unlockAudio);
-        document.addEventListener("touchstart", unlockAudio);
-        document.addEventListener("mousedown", unlockAudio);
-        document.addEventListener("keydown", unlockAudio);
+        audio.addEventListener("pause", () => {
+            if (musicBtn) musicBtn.classList.remove("playing");
+            if (musicIcon) musicIcon.textContent = "🔇";
+        });
     }
 
     /* ======================================================
