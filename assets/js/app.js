@@ -54,8 +54,42 @@ document.addEventListener("DOMContentLoaded", () => {
         flash.addEventListener("animationend", () => flash.remove());
     }
 
+    function playFairySound() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const now = ctx.currentTime;
+        
+        // Magical ascending pentatonic scale
+        const frequencies = [1046.50, 1174.66, 1318.51, 1567.98, 1760.00, 2093.00, 2349.32, 2637.02, 3135.96, 3520.00, 4186.01];
+        
+        frequencies.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = "sine";
+            osc.frequency.value = freq;
+            
+            const startTime = now + (i * 0.07); // Rapid sweep
+            
+            // Envelope: quick attack, long sparkling decay
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.12, startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 1.5);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start(startTime);
+            osc.stop(startTime + 1.5);
+        });
+    }
+
     if (openBtn && card) {
         openBtn.addEventListener("click", () => {
+            // Play synthesized magical fairy sound (100% reliable)
+            try { playFairySound(); } catch (e) { console.log(e); }
+
             // Trigger the magical exit animation on the card
             card.classList.add("magic-exit");
 
