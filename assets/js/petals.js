@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Auto Scrolling logic (play/pause toggleable, constant velocity)
     let isAutoScrolling = false;
-    const scrollSpeed = 1.0; // Speed in pixels per frame (approx 72px per second)
+    const scrollSpeed = 0.9; // Speed in pixels per frame (approx 72px per second)
     let animationFrameId = null;
     let accumulatedScroll = 0;
 
