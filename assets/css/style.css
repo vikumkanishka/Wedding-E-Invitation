@@ -279,6 +279,7 @@ body {
 @media (max-width: 600px) {
     .card {
         padding: 60px 22px 80px;
+        transform: translateY(-50px); /* Move the card and top vines up slightly */
     }
 
     .names {
@@ -300,7 +301,8 @@ body {
 
     .bottom-red-vine {
         width: 125%;
-        bottom: -180px; /* Adjust since the image scales down on mobile */
+        /* Adjusted down to counteract the card moving up, keeping it in the same place on screen */
+        bottom: -230px; 
     }
 }
 
