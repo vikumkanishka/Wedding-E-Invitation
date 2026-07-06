@@ -278,16 +278,29 @@ body {
    =========================== */
 @media (max-width: 600px) {
     .card {
-        padding: 80px 22px 90px;
+        padding: 60px 22px 80px;
     }
 
     .names {
         font-size: 2rem;
     }
 
-    .flower-top,
-    .flower-bottom {
+    .corner-vine {
+        top: -30px;
+        width: 58%;
+    }
+
+    .corner-vine--tl {
+        left: -30px;
+    }
+
+    .corner-vine--tr {
+        right: -30px;
+    }
+
+    .bottom-red-vine {
         width: 125%;
+        bottom: -180px; /* Adjust since the image scales down on mobile */
     }
 }
 
