@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Countdown Timer logic
-    const targetDate = new Date("July 31, 2026 17:00:00").getTime();
+    const targetDate = new Date("July 31, 2026 18:00:00").getTime();
 
     const dSpan = document.getElementById("days");
     const hSpan = document.getElementById("hours");
