@@ -212,21 +212,17 @@
                             </div>
                         </div>
 
-                        <!-- Google Form via hidden iframe -->
-                        <!-- NOTE FOR USER: Change action URL to your Google Form url ending in "/formResponse" -->
-                        <form id="google-rsvp-form" action="https://docs.google.com/forms/d/e/1FAIpQLSfpE_d8xT58f6-YmR_Wq7vDdfU984j5nO-G1oW9m_mEx5J6Wg/formResponse" method="POST" target="rsvp_hidden_iframe">
-                            
-                            <!-- Google Form entry variables. Change the 'name' attributes to match your Google Form entry IDs! -->
-                            <!-- entry.222222222 -> Attendance field -->
-                            <input type="hidden" name="entry.222222222" id="input-attendance" value="">
-                            <!-- entry.333333333 -> Guest Side field -->
-                            <input type="hidden" name="entry.333333333" id="input-side" value="">
+                        <!-- RSVP Form -->
+                        <form id="google-rsvp-form">
+                            <!-- Hidden inputs to store calculated response values for google sheets submission -->
+                            <input type="hidden" name="attendance" id="input-attendance" value="">
+                            <input type="hidden" name="side" id="input-side" value="">
 
                             <!-- Step 2: Yes details (Name & Side Selection) -->
                             <div class="rsvp-step-details rsvp-hidden" id="rsvp-details-yes">
                                 <div class="rsvp-input-group">
                                     <label for="guest-name-yes" class="rsvp-label">Your Name</label>
-                                    <input type="text" id="guest-name-yes" name="entry.111111111" class="rsvp-text-input" placeholder="Enter your full name" required disabled>
+                                    <input type="text" id="guest-name-yes" name="name" class="rsvp-text-input" placeholder="Enter your full name" required disabled>
                                 </div>
 
                                 <div class="rsvp-input-group">
@@ -256,7 +252,7 @@
                             <div class="rsvp-step-details rsvp-hidden" id="rsvp-details-no">
                                 <div class="rsvp-input-group">
                                     <label for="guest-name-no" class="rsvp-label">Your Name</label>
-                                    <input type="text" id="guest-name-no" name="entry.111111111" class="rsvp-text-input" placeholder="Enter your full name" required disabled>
+                                    <input type="text" id="guest-name-no" name="name" class="rsvp-text-input" placeholder="Enter your full name" required disabled>
                                 </div>
                                 <p class="rsvp-no-note">We will miss you, but thank you for letting us know!</p>
                                 <button type="submit" class="rsvp-submit-btn" id="btn-submit-no">
@@ -264,9 +260,6 @@
                                 </button>
                             </div>
                         </form>
-
-                        <!-- Hidden Iframe to prevent google form redirect -->
-                        <iframe name="rsvp_hidden_iframe" id="rsvp_hidden_iframe" style="display:none;"></iframe>
 
                         <!-- Success message -->
                         <div class="rsvp-success-message rsvp-hidden" id="rsvp-success">

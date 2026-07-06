@@ -295,28 +295,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (rsvpForm) {
         rsvpForm.addEventListener("submit", (e) => {
-            if (inputAttendance.value === "Yes, I will attend") {
-                const checkedSide = document.querySelector('input[name="temp_side"]:checked');
-                if (checkedSide) {
-                    inputSide.value = checkedSide.value;
-                }
+            e.preventDefault();
+
+            const attendanceVal = inputAttendance.value;
+            const nameVal = attendanceVal === "Yes, I will attend" ? nameYes.value : nameNo.value;
+            const sideVal = attendanceVal === "Yes, I will attend" ? 
+                (document.querySelector('input[name="temp_side"]:checked')?.value || "Groom's Side") : "N/A";
+
+            // Submit using fetch to the Google Apps Script Web App (user replaces this URL)
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbxjw40cqKRHfFmP9dnjSLV0S1nswv9NNLQwDnP6ruz91736hCpu71LwmMjCrUllydNO/exec"; 
+            
+            if (scriptUrl) {
+                const formData = new FormData();
+                formData.append("name", nameVal);
+                formData.append("attendance", attendanceVal);
+                formData.append("side", sideVal);
+
+                fetch(scriptUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: formData
+                }).catch(err => console.error("Error submitting to Google Sheet:", err));
+            } else {
+                console.warn("RSVP Form submitted, but no Google Apps Script URL has been configured yet.");
             }
 
-            setTimeout(() => {
-                rsvpStep1.style.display = "none";
-                detailsYes.style.display = "none";
-                detailsNo.style.display = "none";
-                successMsg.classList.remove("rsvp-hidden");
-                
-                const successText = document.getElementById("success-text");
-                if (successText) {
-                    if (inputAttendance.value === "Yes, I will attend") {
-                        successText.textContent = "We are absolutely thrilled to celebrate this special day with you! See you there! ❤️";
-                    } else {
-                        successText.textContent = "Thank you for letting us know. You will be missed! 🌸";
-                    }
+            // Immediately show the success state for instant UI response
+            rsvpStep1.style.display = "none";
+            detailsYes.style.display = "none";
+            detailsNo.style.display = "none";
+            successMsg.classList.remove("rsvp-hidden");
+            
+            const successText = document.getElementById("success-text");
+            if (successText) {
+                if (attendanceVal === "Yes, I will attend") {
+                    successText.textContent = "We are absolutely thrilled to celebrate this special day with you! See you there! ❤️";
+                } else {
+                    successText.textContent = "Thank you for letting us know. You will be missed! 🌸";
                 }
-            }, 150);
+            }
         });
     }
 });
