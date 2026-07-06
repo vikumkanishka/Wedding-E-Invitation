@@ -57,16 +57,21 @@ body {
     max-width: 540px;
     /* overflow visible so flowers can spill out */
     overflow: visible;
-    /* 60% opacity red-tinted card */
-    background: rgba(255, 235, 235, 0.60);
+    
+    /* Premium Glassmorphism */
+    background: linear-gradient(135deg, rgba(255, 245, 245, 0.45) 0%, rgba(255, 230, 230, 0.15) 100%);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.7);
+    border-left: 1.5px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.3);
+    
     text-align: center;
     /* padding-bottom leaves room for the overlapping bottom vine */
-    padding: 58px 35px 80px;
+    padding: 65px 35px 85px;
 }
 
 /* ===========================
@@ -91,7 +96,7 @@ body {
    =========================== */
 .corner-vine {
     position: absolute;
-    top: -20px;             /* spill above card top edge */
+    top: -50px;             /* spill above card top edge */
     width: 52%;             /* each vine covers roughly half the card width */
     max-width: 300px;
     mix-blend-mode: multiply;
@@ -100,11 +105,11 @@ body {
 }
 
 .corner-vine--tl {
-    left: -25px;            /* slightly outside the left edge */
+    left: -60px;            /* slightly outside the left edge */
 }
 
 .corner-vine--tr {
-    right: -25px;           /* slightly outside the right edge */
+    right: -60px;           /* slightly outside the right edge */
 }
 
 /* ===========================
