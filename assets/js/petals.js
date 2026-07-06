@@ -80,48 +80,61 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCountdown();
     const timerInterval = setInterval(updateCountdown, 1000);
 
-    // Auto Scrolling logic
+    // Auto Scrolling logic (play/pause toggleable, constant velocity)
+    let isAutoScrolling = false;
+    const scrollSpeed = 0.7; // Speed in pixels per frame (approx 42px per second)
+    let animationFrameId = null;
+
+    function autoScrollStep() {
+        if (!isAutoScrolling) return;
+
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (window.scrollY >= maxScroll - 2) {
+            stopAutoScroll();
+            return;
+        }
+
+        window.scrollBy(0, scrollSpeed);
+        animationFrameId = requestAnimationFrame(autoScrollStep);
+    }
+
+    function startAutoScroll() {
+        if (isAutoScrolling) return;
+        isAutoScrolling = true;
+        animationFrameId = requestAnimationFrame(autoScrollStep);
+    }
+
+    function stopAutoScroll() {
+        if (!isAutoScrolling) return;
+        isAutoScrolling = false;
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+    }
+
+    // Stop on manual wheel scroll or touch swipe
+    window.addEventListener("wheel", stopAutoScroll, { passive: true });
+    window.addEventListener("touchmove", stopAutoScroll, { passive: true });
+
+    // Click anywhere to toggle (resume or stop) auto-scrolling
+    window.addEventListener("click", (e) => {
+        // Skip toggle if user clicked on buttons, links, calendar items, or inputs
+        if (e.target.closest("a") || e.target.closest("button") || e.target.closest("iframe") || e.target.closest(".countdown-item")) {
+            return;
+        }
+        
+        if (isAutoScrolling) {
+            stopAutoScroll();
+        } else {
+            startAutoScroll();
+        }
+    });
+
+    // Start auto-scrolling 1.5 seconds after page loads
     setTimeout(() => {
-        if (window.scrollY > 10) return;
-
-        let scrolledByUser = false;
-        const stopAutoScroll = () => {
-            scrolledByUser = true;
-            window.removeEventListener("wheel", stopAutoScroll);
-            window.removeEventListener("touchmove", stopAutoScroll);
-            window.removeEventListener("mousedown", stopAutoScroll);
-        };
-
-        window.addEventListener("wheel", stopAutoScroll, { passive: true });
-        window.addEventListener("touchmove", stopAutoScroll, { passive: true });
-        window.addEventListener("mousedown", stopAutoScroll);
-
-        const targetScroll = document.querySelector(".inv-details-section")?.offsetTop || 600;
-        const duration = 2800; // time to scroll down smoothly (2.8 seconds)
-        const startTime = performance.now();
-        const startScroll = window.scrollY;
-
-        function easeInOutQuad(t) {
-            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        if (window.scrollY < 20) {
+            startAutoScroll();
         }
-
-        function scrollStep(timestamp) {
-            if (scrolledByUser) return;
-            const elapsed = timestamp - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const ease = easeInOutQuad(progress);
-
-            window.scrollTo(0, startScroll + (targetScroll - startScroll) * ease);
-
-            if (progress < 1) {
-                requestAnimationFrame(scrollStep);
-            } else {
-                window.removeEventListener("wheel", stopAutoScroll);
-                window.removeEventListener("touchmove", stopAutoScroll);
-                window.removeEventListener("mousedown", stopAutoScroll);
-            }
-        }
-
-        requestAnimationFrame(scrollStep);
-    }, 3000);
+    }, 1500);
 });
