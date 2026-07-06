@@ -79,4 +79,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateCountdown();
     const timerInterval = setInterval(updateCountdown, 1000);
+
+    // Auto Scrolling logic
+    setTimeout(() => {
+        if (window.scrollY > 10) return;
+
+        let scrolledByUser = false;
+        const stopAutoScroll = () => {
+            scrolledByUser = true;
+            window.removeEventListener("wheel", stopAutoScroll);
+            window.removeEventListener("touchmove", stopAutoScroll);
+            window.removeEventListener("mousedown", stopAutoScroll);
+        };
+
+        window.addEventListener("wheel", stopAutoScroll, { passive: true });
+        window.addEventListener("touchmove", stopAutoScroll, { passive: true });
+        window.addEventListener("mousedown", stopAutoScroll);
+
+        const targetScroll = document.querySelector(".inv-details-section")?.offsetTop || 600;
+        const duration = 2800; // time to scroll down smoothly (2.8 seconds)
+        const startTime = performance.now();
+        const startScroll = window.scrollY;
+
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+
+        function scrollStep(timestamp) {
+            if (scrolledByUser) return;
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = easeInOutQuad(progress);
+
+            window.scrollTo(0, startScroll + (targetScroll - startScroll) * ease);
+
+            if (progress < 1) {
+                requestAnimationFrame(scrollStep);
+            } else {
+                window.removeEventListener("wheel", stopAutoScroll);
+                window.removeEventListener("touchmove", stopAutoScroll);
+                window.removeEventListener("mousedown", stopAutoScroll);
+            }
+        }
+
+        requestAnimationFrame(scrollStep);
+    }, 3000);
 });
