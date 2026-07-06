@@ -46,31 +46,23 @@
         <!-- Details Section: Continuous scrolling content -->
         <section class="inv-details-section">
             <div class="inv-detail-card">
-                <p class="inv-pre-title">~ Together with their families ~</p>
-                <p class="inv-request">request the honour of your presence at their wedding celebration</p>
+                
+                <!-- Topic: Ceremony Info -->
+                <h1 class="section-main-title">Ceremony Info</h1>
 
-                <div class="inv-divider">
-                    <span class="inv-dline"></span>
-                    <span class="inv-dornament">❦</span>
-                    <span class="inv-dline"></span>
-                </div>
-
-                <!-- Event details -->
-                <div class="inv-details-grid">
-                    <div class="inv-detail-block">
-                        <p class="inv-detail-label">DATE</p>
-                        <p class="inv-detail-value">Friday, July 31, 2026</p>
+                <!-- Parents Section -->
+                <div class="inv-parents-container">
+                    <div class="parent-block">
+                        <p class="parent-salutation">Mr. & Mrs.</p>
+                        <p class="parent-name">Edmund Ashford</p>
+                        <p class="parent-name">Beatrice Ashford</p>
+                        <p class="parent-address">52 Cheyne Walk, London SW3 5LR</p>
                     </div>
-
-                    <div class="inv-detail-block">
-                        <p class="inv-detail-label">TIME</p>
-                        <p class="inv-detail-value">5:00 PM onwards</p>
-                    </div>
-
-                    <div class="inv-detail-block">
-                        <p class="inv-detail-label">VENUE</p>
-                        <p class="inv-detail-value">The Grand Ballroom</p>
-                        <p class="inv-detail-sub">123 Blossom Avenue, Colombo, Sri Lanka</p>
+                    <div class="parent-block">
+                        <p class="parent-salutation">Mr. & Mrs.</p>
+                        <p class="parent-name">Winston Hart</p>
+                        <p class="parent-name">Eleanor Hart</p>
+                        <p class="parent-address">18 Kensington Gore, London SW7 2AP</p>
                     </div>
                 </div>
 
@@ -78,17 +70,130 @@
                     <span class="inv-dline"></span>
                     <span class="inv-dornament">❦</span>
                     <span class="inv-dline"></span>
+                </div>
+
+                <!-- Announcement -->
+                <p class="inv-announcement">With joy, we announce the marriage of</p>
+
+                <!-- Couple Names -->
+                <h2 class="inv-couple-names-detail">
+                    Rashmika
+                    <span class="couple-amp">&</span>
+                    Wimansa
+                </h2>
+
+                <!-- Venue info -->
+                <div class="inv-venue-block">
+                    <p class="venue-label">Wedding Ceremony</p>
+                    <p class="venue-name">The Ned, Tapestry Room</p>
+                </div>
+
+                <!-- Date / Time Block -->
+                <div class="inv-date-time-block">
+                    <div class="dt-time-label">Time</div>
+                    <div class="dt-time">17:00</div>
+                    <div class="dt-calendar">
+                        <span class="dt-day">FRIDAY</span>
+                        <span class="dt-sep">|</span>
+                        <span class="dt-date">31</span>
+                        <span class="dt-sep">|</span>
+                        <span class="dt-month-year">JULY 2026</span>
+                    </div>
+                </div>
+
+                <!-- Our Story Section -->
+                <div class="our-story-section">
+                    <div class="inv-divider">
+                        <span class="inv-dline"></span>
+                        <span class="inv-dornament">❦</span>
+                        <span class="inv-dline"></span>
+                    </div>
+                    <h3 class="story-title">Our Story</h3>
+                    <div class="story-image-wrap">
+                        <img src="assets/images/wedding_couple.png" class="story-image" alt="Wedding Couple">
+                    </div>
+                    <p class="story-desc">"Two souls, one heart — forever begins today."</p>
+                </div>
+
+                <!-- Reception Info Section -->
+                <div class="reception-section">
+                    <div class="inv-divider">
+                        <span class="inv-dline"></span>
+                        <span class="inv-dornament">❦</span>
+                        <span class="inv-dline"></span>
+                    </div>
+                    
+                    <h3 class="reception-title">Reception Info</h3>
+                    <p class="reception-invite">We invite you to celebrate with us at:</p>
+                    
+                    <!-- Date / Time Block for Reception -->
+                    <div class="inv-date-time-block">
+                        <div class="dt-time-label">Time</div>
+                        <div class="dt-time">19:00</div>
+                        <div class="dt-calendar">
+                            <span class="dt-day">FRIDAY</span>
+                            <span class="dt-sep">|</span>
+                            <span class="dt-date">31</span>
+                            <span class="dt-sep">|</span>
+                            <span class="dt-month-year">JULY 2026</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Timeline -->
+                    <div class="reception-timeline">
+                        <div class="timeline-item">
+                            <span class="timeline-label">Guests Arrive</span>
+                            <span class="timeline-time">18:30</span>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-label">Reception Begins</span>
+                            <span class="timeline-time">19:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Countdown Section -->
+                <div class="countdown-section">
+                    <div class="inv-divider">
+                        <span class="inv-dline"></span>
+                        <span class="inv-dornament">❦</span>
+                        <span class="inv-dline"></span>
+                    </div>
+                    
+                    <h3 class="countdown-title">Counting Down</h3>
+                    
+                    <div id="countdown-timer" class="countdown-timer">
+                        <div class="countdown-item">
+                            <span class="countdown-val" id="days">00</span>
+                            <span class="countdown-unit">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-val" id="hours">00</span>
+                            <span class="countdown-unit">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-val" id="minutes">00</span>
+                            <span class="countdown-unit">Mins</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-val" id="seconds">00</span>
+                            <span class="countdown-unit">Secs</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- RSVP section -->
                 <div class="inv-rsvp">
+                    <div class="inv-divider">
+                        <span class="inv-dline"></span>
+                        <span class="inv-dornament">❦</span>
+                        <span class="inv-dline"></span>
+                    </div>
                     <p class="inv-rsvp-title">RSVP</p>
                     <p class="inv-rsvp-note">Kindly reply by July 15, 2026</p>
                     <p class="inv-rsvp-contact">📞 +94 77 123 4567</p>
                 </div>
 
-                <!-- Footer message -->
-                <p class="inv-footer-msg">"Two souls, one heart — forever begins today."</p>
             </div>
         </section>
 
