@@ -65,51 +65,23 @@ body {
     border-radius: 10px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     text-align: center;
-    /* top padding makes room for the heart badge and top flowers */
-    padding: 90px 40px 100px;
+    /* reduced padding = shorter card */
+    padding: 58px 35px 60px;
 }
 
-/* ===========================
-   TOP FLOWER
-   =========================== */
-.flower-top {
-    position: absolute;
-    top: -65px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 110%;
-    max-width: 620px;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 5;
-}
 
-/* ===========================
-   BOTTOM FLOWER
-   =========================== */
-.flower-bottom {
-    position: absolute;
-    bottom: -60px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 110%;
-    max-width: 620px;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 5;
-}
 
 /* ===========================
    HEART BADGE
    =========================== */
 .heart-badge {
     position: absolute;
-    top: 28px;
+    top: 16px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 6;
-    width: 52px;
-    height: 52px;
+    width: 40px;
+    height: 40px;
     background-color: #8b1a1a;
     border-radius: 50%;
     display: flex;
@@ -151,7 +123,7 @@ body {
     font-family: 'Cinzel', serif;
     font-size: 1.4rem;
     color: #8b1a1a;
-    margin: 8px 0;
+    margin: 4px 0;
     font-style: italic;
 }
 
@@ -160,9 +132,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin: 20px auto;
-    width: 200px;
+    gap: 10px;
+    margin: 10px auto;
+    width: 160px;
 }
 
 .line {
@@ -191,7 +163,7 @@ body {
     font-size: 1rem;
     font-weight: 400;
     color: #6b1010;
-    margin-bottom: 30px;
+    margin-bottom: 16px;
 }
 
 /* ===========================
