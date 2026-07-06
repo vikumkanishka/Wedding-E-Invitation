@@ -186,6 +186,97 @@
                             <span class="countdown-unit">Secs</span>
                         </div>
                     </div>
+                
+                <!-- RSVP section -->
+                <div class="inv-rsvp" id="rsvp-section">
+                    <div class="inv-divider">
+                        <span class="inv-dline"></span>
+                        <span class="inv-dornament">❦</span>
+                        <span class="inv-dline"></span>
+                    </div>
+                    <h3 class="rsvp-title">RSVP</h3>
+                    <p class="inv-rsvp-note">Kindly reply by July 15, 2026</p>
+                    
+                    <!-- Form Container -->
+                    <div class="rsvp-form-container">
+                        <!-- Step 1: Attendance Question -->
+                        <div class="rsvp-step" id="rsvp-step-1">
+                            <p class="rsvp-question">Will you celebrate with us?</p>
+                            <div class="rsvp-options-grid">
+                                <button type="button" class="rsvp-opt-btn" id="btn-attend-yes">
+                                    <span class="opt-emoji">🌸</span> Yes, I'm Coming!
+                                </button>
+                                <button type="button" class="rsvp-opt-btn" id="btn-attend-no">
+                                    <span class="opt-emoji">🥀</span> No, I Can't Make It
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Google Form via hidden iframe -->
+                        <!-- NOTE FOR USER: Change action URL to your Google Form url ending in "/formResponse" -->
+                        <form id="google-rsvp-form" action="https://docs.google.com/forms/d/e/1FAIpQLSfpE_d8xT58f6-YmR_Wq7vDdfU984j5nO-G1oW9m_mEx5J6Wg/formResponse" method="POST" target="rsvp_hidden_iframe">
+                            
+                            <!-- Google Form entry variables. Change the 'name' attributes to match your Google Form entry IDs! -->
+                            <!-- entry.222222222 -> Attendance field -->
+                            <input type="hidden" name="entry.222222222" id="input-attendance" value="">
+                            <!-- entry.333333333 -> Guest Side field -->
+                            <input type="hidden" name="entry.333333333" id="input-side" value="">
+
+                            <!-- Step 2: Yes details (Name & Side Selection) -->
+                            <div class="rsvp-step-details rsvp-hidden" id="rsvp-details-yes">
+                                <div class="rsvp-input-group">
+                                    <label for="guest-name-yes" class="rsvp-label">Your Name</label>
+                                    <input type="text" id="guest-name-yes" name="entry.111111111" class="rsvp-text-input" placeholder="Enter your full name" required disabled>
+                                </div>
+
+                                <div class="rsvp-input-group">
+                                    <label class="rsvp-label">Whose guest are you?</label>
+                                    <div class="rsvp-side-grid">
+                                        <label class="rsvp-side-card">
+                                            <input type="radio" name="temp_side" value="Groom's Side" checked>
+                                            <div class="side-card-content">
+                                                <span class="side-role">Groom's Side</span>
+                                            </div>
+                                        </label>
+                                        <label class="rsvp-side-card">
+                                            <input type="radio" name="temp_side" value="Bride's Side">
+                                            <div class="side-card-content">
+                                                <span class="side-role">Bride's Side</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="rsvp-submit-btn" id="btn-submit-yes">
+                                    Confirm Attendance 💖
+                                </button>
+                            </div>
+
+                            <!-- Step 2: No details (Name only) -->
+                            <div class="rsvp-step-details rsvp-hidden" id="rsvp-details-no">
+                                <div class="rsvp-input-group">
+                                    <label for="guest-name-no" class="rsvp-label">Your Name</label>
+                                    <input type="text" id="guest-name-no" name="entry.111111111" class="rsvp-text-input" placeholder="Enter your full name" required disabled>
+                                </div>
+                                <p class="rsvp-no-note">We will miss you, but thank you for letting us know!</p>
+                                <button type="submit" class="rsvp-submit-btn" id="btn-submit-no">
+                                    Send Regrets 🥀
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Hidden Iframe to prevent google form redirect -->
+                        <iframe name="rsvp_hidden_iframe" id="rsvp_hidden_iframe" style="display:none;"></iframe>
+
+                        <!-- Success message -->
+                        <div class="rsvp-success-message rsvp-hidden" id="rsvp-success">
+                            <span class="success-icon">✨</span>
+                            <h4 class="success-title">Thank You!</h4>
+                            <p class="success-desc" id="success-text">Your RSVP has been submitted successfully.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Romantic Calendar Section -->
                 <div class="calendar-section">
                     <div class="inv-divider">
@@ -253,13 +344,10 @@
                     </div>
                 </div>
 
-                <!-- Add to Calendar & RSVP buttons -->
+                <!-- Add to Calendar button -->
                 <div class="action-buttons-container">
                     <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+of+Rashmika+%26+Wimansa&dates=20260731T123000Z/20260731T183000Z&details=Wedding+Ceremony+%26+Reception&location=New+River+Bank+Hotel,+Matara,+Sri+Lanka" target="_blank" class="action-btn calendar-btn">
                         <span class="btn-icon">📅</span> Add to Calendar
-                    </a>
-                    <a href="#rsvp-section" class="action-btn rsvp-btn">
-                        <span class="btn-icon">💌</span> RSVP Now
                     </a>
                 </div>
 
@@ -286,19 +374,6 @@
                         </iframe>
                     </div>
                 </div>
-
-                <!-- RSVP section -->
-                <div class="inv-rsvp" id="rsvp-section">
-                    <div class="inv-divider">
-                        <span class="inv-dline"></span>
-                        <span class="inv-dornament">❦</span>
-                        <span class="inv-dline"></span>
-                    </div>
-                    <p class="inv-rsvp-title">RSVP</p>
-                    <p class="inv-rsvp-note">Kindly reply by July 15, 2026</p>
-                    <p class="inv-rsvp-contact">📞 +94 77 123 4567</p>
-                </div>
-
             </div>
         </section>
 

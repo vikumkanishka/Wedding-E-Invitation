@@ -119,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Click anywhere to toggle (resume or stop) auto-scrolling
     window.addEventListener("click", (e) => {
-        // Skip toggle if user clicked on buttons, links, calendar items, music controllers, or inputs
-        if (e.target.closest("a") || e.target.closest("button") || e.target.closest("iframe") || e.target.closest(".countdown-item") || e.target.closest(".music-control-container")) {
+        // Skip toggle if user clicked on buttons, links, calendar items, music controllers, inputs, labels, or the RSVP form container
+        if (e.target.closest("a") || e.target.closest("button") || e.target.closest("iframe") || e.target.closest(".countdown-item") || e.target.closest(".music-control-container") || e.target.closest("input") || e.target.closest("label") || e.target.closest(".rsvp-form-container")) {
             return;
         }
         
@@ -249,5 +249,74 @@ document.addEventListener("DOMContentLoaded", () => {
                 resetCoverflowInterval();
             });
         }
+    }
+
+    /* ======================================================
+       INTERACTIVE RSVP FORM HANDLER
+       ====================================================== */
+    const btnYes = document.getElementById("btn-attend-yes");
+    const btnNo = document.getElementById("btn-attend-no");
+    const detailsYes = document.getElementById("rsvp-details-yes");
+    const detailsNo = document.getElementById("rsvp-details-no");
+    const nameYes = document.getElementById("guest-name-yes");
+    const nameNo = document.getElementById("guest-name-no");
+    const inputAttendance = document.getElementById("input-attendance");
+    const inputSide = document.getElementById("input-side");
+    const rsvpForm = document.getElementById("google-rsvp-form");
+    const successMsg = document.getElementById("rsvp-success");
+    const rsvpStep1 = document.getElementById("rsvp-step-1");
+
+    if (btnYes && btnNo) {
+        btnYes.addEventListener("click", (e) => {
+            e.stopPropagation();
+            btnYes.classList.add("selected-yes");
+            btnNo.classList.remove("selected-no");
+            detailsYes.classList.remove("rsvp-hidden");
+            detailsNo.classList.add("rsvp-hidden");
+            inputAttendance.value = "Yes, I will attend";
+            nameYes.disabled = false;
+            nameNo.disabled = true;
+            nameYes.focus();
+        });
+
+        btnNo.addEventListener("click", (e) => {
+            e.stopPropagation();
+            btnNo.classList.add("selected-no");
+            btnYes.classList.remove("selected-yes");
+            detailsNo.classList.remove("rsvp-hidden");
+            detailsYes.classList.add("rsvp-hidden");
+            inputAttendance.value = "No, I cannot attend";
+            inputSide.value = "N/A (Declined)";
+            nameNo.disabled = false;
+            nameYes.disabled = true;
+            nameNo.focus();
+        });
+    }
+
+    if (rsvpForm) {
+        rsvpForm.addEventListener("submit", (e) => {
+            if (inputAttendance.value === "Yes, I will attend") {
+                const checkedSide = document.querySelector('input[name="temp_side"]:checked');
+                if (checkedSide) {
+                    inputSide.value = checkedSide.value;
+                }
+            }
+
+            setTimeout(() => {
+                rsvpStep1.style.display = "none";
+                detailsYes.style.display = "none";
+                detailsNo.style.display = "none";
+                successMsg.classList.remove("rsvp-hidden");
+                
+                const successText = document.getElementById("success-text");
+                if (successText) {
+                    if (inputAttendance.value === "Yes, I will attend") {
+                        successText.textContent = "We are absolutely thrilled to celebrate this special day with you! See you there! ❤️";
+                    } else {
+                        successText.textContent = "Thank you for letting us know. You will be missed! 🌸";
+                    }
+                }
+            }, 150);
+        });
     }
 });
