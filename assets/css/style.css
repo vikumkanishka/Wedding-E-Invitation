@@ -65,11 +65,47 @@ body {
     border-radius: 10px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     text-align: center;
-    /* reduced padding = shorter card */
-    padding: 58px 35px 60px;
+    /* padding-bottom leaves room for the overlapping bottom vine */
+    padding: 58px 35px 80px;
 }
 
+/* ===========================
+   BOTTOM RED FLOWER VINE
+   Absolutely at the card bottom edge,
+   overlapping the Open Invitation button
+   =========================== */
+.bottom-red-vine {
+    position: absolute;
+    bottom: -320px;          /* let it spill slightly below the card */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110%;
+    max-width: 580px;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 4;             /* overlaps the button */
+}
 
+/* ===========================
+   TOP CORNER VINES
+   =========================== */
+.corner-vine {
+    position: absolute;
+    top: -20px;             /* spill above card top edge */
+    width: 52%;             /* each vine covers roughly half the card width */
+    max-width: 300px;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.corner-vine--tl {
+    left: -25px;            /* slightly outside the left edge */
+}
+
+.corner-vine--tr {
+    right: -25px;           /* slightly outside the right edge */
+}
 
 /* ===========================
    HEART BADGE
